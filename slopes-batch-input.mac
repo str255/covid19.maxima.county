@@ -1,0 +1,25 @@
+county_names:["Wyoming__Washakie"]$
+/* read in data */
+
+no_countys:length(county_names);
+for i:1 thru no_countys do batch(sconcat(county_names[i],".mac"))$
+county_list:map(lambda([x],parse_string(x)),county_names)$
+
+parse_timedate ("2020-01-01");
+/* base timeline */
+day2020(x):=(parse_timedate(x)-parse_timedate("2020-01-01"))/(3600*24)+1$
+for i:1 thru no_countys do county_list[i]:map(lambda([x],[day2020(x[1]),x[2]]),eval_string(county_names[i]));
+for i:1 thru no_countys do county_mortality[i]:map(lambda([x],[day2020(x[1]),x[3]]),eval_string(county_names[i]));
+
+compute_slope(n,s):=block([a:log(s[n][2])-log(s[n-1][2]),
+	b:log(s[n-1][2])-log(s[n-2][2]),
+	c:log(s[n-2][2])-log(s[n-3][2]),
+	d:log(s[n-3][2])-log(s[n-4][2])],0.25*(a+b+c+d));
+slopes:map(lambda([x],block([numer:true,s:eval_string(x),n,d], n:length(s), d:compute_slope(n,s),
+if abs(d)<0.001 then [x,0] else [x,0.69/d])), county_names);  
+/*stringout("slopes.mac",slopes);*/
+file_output_append:true$
+with_stdout ("slopes.txt", for i:1 thru length(slopes) do printf (true, "~f              ~a~%", slopes[i][2], slopes[i][1]));
+quit();
+
+
