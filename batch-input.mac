@@ -1,0 +1,25 @@
+county_names:["Wyoming__Washakie"]$
+/* read in data */
+no_counties:length(county_names);
+for i:1 thru no_counties do batch(sconcat(county_names[i],".mac"))$
+/*county_list:map(lambda([x],parse_string(x)),county_names)$*/
+
+parse_timedate ("2020-01-01");
+/* base timeline */
+day2020(x):=(parse_timedate(x)-parse_timedate("2020-01-01"))/(3600*24)+1$
+for i:1 thru no_counties do county_list[i]:map(lambda([x],[day2020(x[1]),x[2]]),eval_string(county_names[i]))$
+for i:1 thru no_counties do state_mortality[i]:map(lambda([x],[day2020(x[1]),x[3]]),eval_string(county_names[i]))$
+for i:1 thru no_counties do block([acounty:county_names[i]], 
+    plot2d([[discrete,county_list[i]],[discrete,state_mortality[i]]],[legend,acounty,"deaths"],
+    [title,"Positive Confirmed Cases"],[xlabel,"March 2020 date"],[ylabel,"logarithm number souls"], 
+    [png_file,sconcat(acounty,".png")],
+    [label,["Jan-25",day2020("2020-01-25"),10],["Feb-15",day2020("2020-02-15"),10],
+           ["Mar-15",day2020("2020-03-15"),10],
+           ["Apr-1",day2020("2020-04-01"),10],
+           ["Apr-15",day2020("2020-04-15"),10],
+           ["May-1",day2020("2020-05-01"),10],
+           ["May-15",day2020("2020-05-15"),10]
+           ],
+	   logy))$
+
+quit();
