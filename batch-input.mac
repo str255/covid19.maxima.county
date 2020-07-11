@@ -13,13 +13,15 @@ for i:1 thru no_counties do block([acounty:county_names[i]],
     plot2d([[discrete,county_list[i]],[discrete,state_mortality[i]]],[legend,acounty,"deaths"],
     [title,"Positive Confirmed Cases"],[xlabel,"March 2020 start date"],[ylabel,"Number Souls"], 
     [png_file,sconcat(acounty,".png")],
-    [label,["Jan-25",day2020("2020-01-25"),10],["Feb-15",day2020("2020-02-15"),10],
+    [label,["Jan-25",day2020("2020-01-25"),10],
+           ["Feb-14",day2020("2020-02-14"),10],
            ["Mar-15",day2020("2020-03-15"),10],
            ["Apr-1",day2020("2020-04-01"),10],
            ["Apr-15",day2020("2020-04-15"),10],
            ["May-1",day2020("2020-05-01"),10],
            ["May-25",day2020("2020-05-25"),10],
-           ["July-4",day2020("2020-07-04"),10],	   
+           ["July-4",day2020("2020-07-04"),10],
+	   ["July-14",day2020("2020-07-14"),10]
            ]
 	   ))$
 
