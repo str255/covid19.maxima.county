@@ -1,4 +1,4 @@
-county_names:["Texas__Jefferson"]$
+county_names:["Wyoming__Washakie"]$
 /* read in data */
 no_counties:length(county_names);
 for i:1 thru no_counties do batch(sconcat(county_names[i],".mac"))$
